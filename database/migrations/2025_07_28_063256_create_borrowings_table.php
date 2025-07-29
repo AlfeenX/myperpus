@@ -24,7 +24,7 @@ return new class extends Migration
             );
             $table->date('borrow_date');
             $table->date('due_date');
-            $table->date('return_at');
+            $table->date('return_at')->nullable();
             $table->enum('status',['Dipinjam','Selesai', 'Terlambat'])->default('Dipinjam');
             $table->timestamps();
         });
