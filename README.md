@@ -21,7 +21,7 @@ MyPerpus is a Laravel-based library management system. It provides features for 
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/myperpus.git
+   git clone https://github.com/AlfeenX/myperpus.git
    cd myperpus
    ```
 
