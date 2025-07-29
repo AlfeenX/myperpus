@@ -30,8 +30,10 @@ class MemberResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Nama')
                     ->required(),
                 TextInput::make('phone')
+                    ->label('Nomor Ponsel')
                     ->minLength(10)
                     ->maxLength(15)
                     ->required(),
@@ -39,6 +41,7 @@ class MemberResource extends Resource
                     ->email()
                     ->required(),
                 Textarea::make('address')
+                    ->label('Alamat')
                     ->columnSpanFull()
             ]);
     }
@@ -47,10 +50,17 @@ class MemberResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('email')->icon('heroicon-o-envelope'),
-                TextColumn::make('phone')->icon('heroicon-o-phone'),
-                TextColumn::make('address'),
+                TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('email')
+                    ->icon('heroicon-o-envelope'),
+                TextColumn::make('phone')
+                    ->label('Nomor Ponsel')
+                    ->icon('heroicon-o-phone'),
+                TextColumn::make('address')
+                    ->label('Alamat'),
             ])
             ->filters([
                 //

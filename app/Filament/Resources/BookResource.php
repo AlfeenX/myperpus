@@ -27,23 +27,29 @@ class BookResource extends Resource
         return $form
             ->schema([
                 TextInput::make('title')
+                    ->label('Judul')
                     ->translateLabel()
                     ->required()
                     ->maxLength(255),
                 TextInput::make('author')
+                    ->label('Penulis')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('publisher')
+                    ->label('Penerbit')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('year')
+                    ->label('Tahun')
                     ->required()
                     ->numeric()
                     ->minValue(1900)
                     ->maxValue(date('Y')),
                 TextInput::make('stock')
+                    ->label('Stok')
                     ->numeric(),
                 Select::make('category_id')
+                    ->label('Kategori')
                     ->relationship('category', 'name')
                     ->required()
 
@@ -55,25 +61,33 @@ class BookResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->label('Judul')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('author')
+                    ->label('Penulis')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('publisher')
-                    ->sortable(),
+                    ->label('Penerbit')->sortable(),
                 TextColumn::make('year')
+                    ->label('Tahun')
                     ->sortable(),
                 TextColumn::make('stock')
+                    ->label('Stok')
                     ->searchable(),
-                TextColumn::make('category_id')
+                TextColumn::make('category.name')
+                    ->label('Kategori')
                     ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('category')
+                ->label('Kategoti')
+                ->relationship('category', 'name')
 
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

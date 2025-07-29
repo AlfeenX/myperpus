@@ -34,27 +34,29 @@ class BorrowingResource extends Resource
             ->schema([
                 Select::make('member_id')
                     ->searchable()
-                    ->label('Member')
+                    ->label('Nama Anggota')
                     ->placeholder('Select member')
                     ->relationship('member', 'name')
                     ->required(),
                 Select::make('book_id')
                     ->searchable()
-                    ->label('Book')
+                    ->label('Nama Buku')
                     ->placeholder('Select book')
                     ->relationship('book', 'title')
                     ->required(),
                 Select::make('user_id')
-                    ->searchable()
-                    ->label('User')
-                    ->placeholder('Select user')
+                    ->default(auth('web')->user()?->id)
+                    ->disabled()
+                    ->label('Nama Petugas')
                     ->relationship('user', 'name')
                     ->required(),
                 DatePicker::make('borrow_date')
+                    ->label('Tanggal Peminjaman')
                     ->default(now())
                     ->disabled()
                     ->required(),
-                DatePicker::make('due_date')
+                    DatePicker::make('due_date')
+                    ->label('Tanggal Jatuh Tempo')
                     ->minDate(now())
                     ->required(),
             ]);
@@ -64,11 +66,18 @@ class BorrowingResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('book.title')->label('Book')->sortable(),
-                TextColumn::make('member.name')->label('Member')->sortable(),
-                TextColumn::make('user.name')->label('User')->sortable(),
-                TextColumn::make('borrow_date')->sortable(),
-                TextColumn::make('due_date')->sortable(),
+                TextColumn::make('book.title')
+                    ->label('Nama Buku')
+                    ->sortable(),
+                TextColumn::make('member.name')
+                    ->label('Nama Anggota')
+                    ->sortable(),
+                TextColumn::make('borrow_date')
+                    ->label('Tanggal Pinjam')
+                    ->sortable(),
+                TextColumn::make('due_date')
+                    ->label('Jatuh Tempo')
+                    ->sortable(),
                 TextColumn::make('status')->color(fn(string $state): string => match ($state) {
                     'Dipinjam' => 'warning',
                     'Selesai' => 'success',
@@ -103,6 +112,7 @@ class BorrowingResource extends Resource
                         ]);
                     }),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
 
             ])
             ->bulkActions([
