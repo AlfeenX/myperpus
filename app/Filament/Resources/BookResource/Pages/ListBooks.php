@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\BookResource\Pages;
 
+use App\Filament\Imports\BookImporter;
 use App\Filament\Resources\BookResource;
 use Filament\Actions;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListBooks extends ListRecords
@@ -14,6 +16,9 @@ class ListBooks extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            ImportAction::make()
+                ->label('Impor Buku')
+                ->importer(BookImporter::class),
         ];
     }
 }

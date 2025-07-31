@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookResource\Pages;
 use App\Models\Book;
+use Filament\Actions\Imports\ImportColumn;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -82,8 +83,8 @@ class BookResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('category')
-                ->label('Kategoti')
-                ->relationship('category', 'name')
+                    ->label('Kategoti')
+                    ->relationship('category', 'name')
 
             ])
             ->actions([

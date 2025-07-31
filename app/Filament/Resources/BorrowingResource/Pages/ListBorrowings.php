@@ -16,13 +16,13 @@ class ListBorrowings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\CreateAction::make(),
             ExportAction::make()
                 ->exporter(BorrowingExporter::class)
                 ->formats([
                     ExportFormat::Xlsx
                 ])
                 ->label('Ekspor Peminjaman'),
-            Actions\CreateAction::make(),
         ];
     }
 }
