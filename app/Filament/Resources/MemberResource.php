@@ -38,6 +38,7 @@ class MemberResource extends Resource
                     ->maxLength(15)
                     ->required(),
                 TextInput::make('email')
+                    ->label('Alamat Email')
                     ->email()
                     ->required(),
                 Textarea::make('address')
@@ -55,6 +56,7 @@ class MemberResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label('Alamat Email')
                     ->icon('heroicon-o-envelope'),
                 TextColumn::make('phone')
                     ->label('Nomor Ponsel')

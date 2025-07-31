@@ -28,6 +28,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->font('Roboto')
             ->login()
+            ->favicon(asset('images/logo.png'))
+            ->databaseNotifications()
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Gray,

@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources\BorrowingResource\Pages;
 
+use App\Filament\Exports\BorrowingExporter;
 use App\Filament\Resources\BorrowingResource;
 use Filament\Actions;
+use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Resources\Pages\ListRecords;
 
 class ListBorrowings extends ListRecords
@@ -13,6 +16,12 @@ class ListBorrowings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            ExportAction::make()
+                ->exporter(BorrowingExporter::class)
+                ->formats([
+                    ExportFormat::Xlsx
+                ])
+                ->label('Ekspor Peminjaman'),
             Actions\CreateAction::make(),
         ];
     }

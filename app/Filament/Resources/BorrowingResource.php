@@ -2,9 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\BorrowingExporter;
 use App\Filament\Resources\BorrowingResource\Pages;
 use App\Filament\Resources\BorrowingResource\RelationManagers;
+use App\Models\Book;
 use App\Models\Borrowing;
+use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
@@ -27,6 +32,7 @@ class BorrowingResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     protected static ?string $navigationGroup = 'Library Management';
+
 
     public static function form(Form $form): Form
     {
@@ -53,9 +59,8 @@ class BorrowingResource extends Resource
                 DatePicker::make('borrow_date')
                     ->label('Tanggal Peminjaman')
                     ->default(now())
-                    ->disabled()
                     ->required(),
-                    DatePicker::make('due_date')
+                DatePicker::make('due_date')
                     ->label('Tanggal Jatuh Tempo')
                     ->minDate(now())
                     ->required(),
@@ -68,10 +73,12 @@ class BorrowingResource extends Resource
             ->columns([
                 TextColumn::make('book.title')
                     ->label('Nama Buku')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('member.name')
                     ->label('Nama Anggota')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('borrow_date')
                     ->label('Tanggal Pinjam')
                     ->sortable(),
@@ -107,13 +114,14 @@ class BorrowingResource extends Resource
                     ->visible(fn($record) => $record->status === 'Dipinjam')
                     ->action(function ($record) {
                         $record->update([
+                            'stock' => Book::find($record->book_id)->increment('stock'),
                             'status' => 'Selesai',
                             'return_at' => now()
                         ]);
                     }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-
+                ->visible(fn($record) => $record->status === "Selesai")
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
