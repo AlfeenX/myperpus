@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -32,10 +33,10 @@ class BookResource extends Resource
                     ->translateLabel()
                     ->required()
                     ->maxLength(255),
-                TextInput::make('author')
+                Select::make('author_id')
                     ->label('Penulis')
-                    ->required()
-                    ->maxLength(255),
+                    ->relationship('author', 'name')
+                    ->required(),
                 TextInput::make('publisher')
                     ->label('Penerbit')
                     ->required()
@@ -65,7 +66,7 @@ class BookResource extends Resource
                     ->label('Judul')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('author')
+                TextColumn::make('author.name')
                     ->label('Penulis')
                     ->searchable()
                     ->sortable(),
@@ -83,7 +84,7 @@ class BookResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('category')
-                    ->label('Kategoti')
+                    ->label('Kategori')
                     ->relationship('category', 'name')
 
             ])
@@ -121,5 +122,25 @@ class BookResource extends Resource
             return "Buku";
         }
         return "Books";
+    }
+
+    public static function mutateFormDataBeforeCreate(array $data): array
+    {
+        $existData = Book::where('title', $data['title'])
+            ->where('author_id', $data['author_id'])
+            ->first();
+
+        if($existData){
+            $existData->increment('stock', $data['stock']);
+
+            Notification::make()
+            ->title('Stok berhasil ditambahkan!')
+            ->success()
+            ->send();
+
+            return [];
+        }
+
+        return $data;
     }
 }

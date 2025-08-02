@@ -2,6 +2,7 @@
 
 namespace App\Filament\Imports;
 
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use Filament\Actions\Imports\ImportColumn;
@@ -20,7 +21,11 @@ class BookImporter extends Importer
                 ->rules(['required', 'max:255']),
             ImportColumn::make('author')
                 ->requiredMapping()
-                ->rules(['required', 'max:255']),
+                ->relationship(resolveUsing: function (string $state): Author {
+                    return Author::firstOrCreate([
+                        'name' => $state
+                    ]);
+                }),
             ImportColumn::make('publisher')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
@@ -35,18 +40,21 @@ class BookImporter extends Importer
             ImportColumn::make('category')
                 ->requiredMapping()
                 ->relationship(resolveUsing: function (string $state): Category {
-                        return Category::firstOrCreate([
-                            'name' => $state,
-                            'slug' => $state
-                        ]);
-                    })
+                    return Category::firstOrCreate([
+                        'name' => $state,
+                        'slug' => $state
+                    ]);
+                })
+                 ->fillRecordUsing(function (Book $record, string $state) {
+                    $record->stock += (int) $state;
+                })
                 ->rules(['required']),
         ];
     }
 
     public function resolveRecord(): ?Book
     {
-        return new Book();
+        return new Book;
     }
 
     public static function getCompletedNotificationBody(Import $import): string

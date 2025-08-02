@@ -7,3 +7,7 @@
 @config 'tailwind.config.js';
 @source '../../../../vendor/bezhansalleh/filament-language-switch/resources/views/**/*.blade.php';
 
+.fi-sidebar {
+    @apply bg-white dark:bg-gray-950;
+}
+
