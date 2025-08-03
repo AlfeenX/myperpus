@@ -45,9 +45,6 @@ class BookImporter extends Importer
                         'slug' => $state
                     ]);
                 })
-                 ->fillRecordUsing(function (Book $record, string $state) {
-                    $record->stock += (int) $state;
-                })
                 ->rules(['required']),
         ];
     }

@@ -29,7 +29,7 @@ class BookResource extends Resource
         return $form
             ->schema([
                 TextInput::make('title')
-                    ->label('Judul')
+                    ->label('Judul Buku')
                     ->translateLabel()
                     ->required()
                     ->maxLength(255),
@@ -54,7 +54,6 @@ class BookResource extends Resource
                     ->label('Kategori')
                     ->relationship('category', 'name')
                     ->required()
-
             ]);
     }
 
@@ -63,7 +62,7 @@ class BookResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('Judul')
+                    ->label('Judul Buku')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('author.name')

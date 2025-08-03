@@ -44,6 +44,7 @@ class MemberResource extends Resource
                 Textarea::make('address')
                     ->label('Alamat')
                     ->columnSpanFull()
+                    ->rows(8)
             ]);
     }
 

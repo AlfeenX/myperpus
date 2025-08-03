@@ -46,7 +46,7 @@ class BorrowingResource extends Resource
                     ->required(),
                 Select::make('book_id')
                     ->searchable()
-                    ->label('Nama Buku')
+                    ->label('Judul Buku')
                     ->placeholder('Select book')
                     ->relationship('book', 'title')
                     ->required(),
@@ -72,7 +72,7 @@ class BorrowingResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('book.title')
-                    ->label('Nama Buku')
+                    ->label('Judul Buku')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('member.name')
