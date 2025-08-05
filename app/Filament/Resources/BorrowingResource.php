@@ -22,7 +22,6 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 
-
 use function Livewire\before;
 
 class BorrowingResource extends Resource
@@ -85,11 +84,12 @@ class BorrowingResource extends Resource
                 TextColumn::make('due_date')
                     ->label('Jatuh Tempo')
                     ->sortable(),
-                TextColumn::make('status')->color(fn(string $state): string => match ($state) {
-                    'Dipinjam' => 'warning',
-                    'Selesai' => 'success',
-                    'Terlambat' => 'danger',
-                })->sortable()
+                TextColumn::make('status')
+                    ->color(fn(string $state): string => match ($state) {
+                        'Dipinjam' => 'warning',
+                        'Selesai' => 'success',
+                        'Terlambat' => 'danger',
+                    })
                     ->badge()
                     ->icon(fn(string $state): string => match ($state) {
                         'Dipinjam' => 'heroicon-o-arrow-path',
@@ -121,7 +121,7 @@ class BorrowingResource extends Resource
                     }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                ->visible(fn($record) => $record->status === "Selesai")
+                    ->visible(fn($record) => $record->status === "Selesai")
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

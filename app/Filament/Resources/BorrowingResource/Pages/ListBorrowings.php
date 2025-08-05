@@ -7,6 +7,7 @@ use App\Filament\Resources\BorrowingResource;
 use Filament\Actions;
 use Filament\Actions\ExportAction;
 use Filament\Actions\Exports\Enums\ExportFormat;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 
 class ListBorrowings extends ListRecords
@@ -23,6 +24,16 @@ class ListBorrowings extends ListRecords
                     ExportFormat::Xlsx
                 ])
                 ->label('Ekspor Peminjaman'),
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            null => Tab::make('Semua'),
+            'Dipinjam' => Tab::make()->query(fn($query) => $query->where('status', 'Dipinjam')),
+            'Terlambat' => Tab::make()->query(fn($query) => $query->where('status', 'Terlambat')),
+            'Selesai' => Tab::make()->query(fn($query) => $query->where('status', 'Selesai')),
         ];
     }
 }
