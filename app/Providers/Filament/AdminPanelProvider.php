@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\CustomLogin;
 use App\Filament\Resources\BookResource\Widgets\StatsOverview;
 use App\Filament\Widgets\BorrowingsChart;
 use Filament\Http\Middleware\Authenticate;
@@ -29,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->font('Roboto')
-            ->login()
+            ->login(CustomLogin::class)
             ->favicon(asset('images/logo.png'))
             ->databaseNotifications()
             ->colors([
