@@ -2,28 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Exports\BorrowingExporter;
 use App\Filament\Resources\BorrowingResource\Pages;
-use App\Filament\Resources\BorrowingResource\RelationManagers;
 use App\Models\Book;
 use App\Models\Borrowing;
-use Filament\Actions\ExportAction;
-use Filament\Actions\Exports\Enums\ExportFormat;
-use Filament\Facades\Filament;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-
-use function Livewire\before;
 
 class BorrowingResource extends Resource
 {
@@ -59,6 +49,8 @@ class BorrowingResource extends Resource
                         ->required(),
                     DatePicker::make('borrow_date')
                         ->label('Tanggal Peminjaman')
+                        ->disabled()
+                        ->dehydrated()
                         ->default(now())
                         ->required(),
                     DatePicker::make('due_date')
@@ -122,7 +114,8 @@ class BorrowingResource extends Resource
                             'return_at' => now()
                         ]);
                     }),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn($record) => $record->status === 'Dipinjam'),
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn($record) => $record->status === "Selesai")
             ])
