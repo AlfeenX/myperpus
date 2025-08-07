@@ -12,6 +12,7 @@ use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -37,32 +38,34 @@ class BorrowingResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('member_id')
-                    ->searchable()
-                    ->label('Nama Anggota')
-                    ->placeholder('Select member')
-                    ->relationship('member', 'name')
-                    ->required(),
-                Select::make('book_id')
-                    ->searchable()
-                    ->label('Judul Buku')
-                    ->placeholder('Select book')
-                    ->relationship('book', 'title')
-                    ->required(),
-                Select::make('user_id')
-                    ->default(auth('web')->user()?->id)
-                    ->disabled()
-                    ->label('Nama Petugas')
-                    ->relationship('user', 'name')
-                    ->required(),
-                DatePicker::make('borrow_date')
-                    ->label('Tanggal Peminjaman')
-                    ->default(now())
-                    ->required(),
-                DatePicker::make('due_date')
-                    ->label('Tanggal Jatuh Tempo')
-                    ->minDate(now())
-                    ->required(),
+                Section::make([
+                    Select::make('member_id')
+                        ->searchable()
+                        ->label('Nama Anggota')
+                        ->placeholder('Select member')
+                        ->relationship('member', 'name')
+                        ->required(),
+                    Select::make('book_id')
+                        ->searchable()
+                        ->label('Judul Buku')
+                        ->placeholder('Select book')
+                        ->relationship('book', 'title')
+                        ->required(),
+                    Select::make('user_id')
+                        ->default(auth('web')->user()?->id)
+                        ->disabled()
+                        ->label('Nama Petugas')
+                        ->relationship('user', 'name')
+                        ->required(),
+                    DatePicker::make('borrow_date')
+                        ->label('Tanggal Peminjaman')
+                        ->default(now())
+                        ->required(),
+                    DatePicker::make('due_date')
+                        ->label('Tanggal Jatuh Tempo')
+                        ->minDate(now())
+                        ->required(),
+                ])->columns(2)
             ]);
     }
 

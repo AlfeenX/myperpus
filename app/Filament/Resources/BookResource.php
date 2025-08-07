@@ -6,6 +6,7 @@ use App\Filament\Resources\BookResource\Pages;
 use App\Models\Book;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -28,32 +29,34 @@ class BookResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')
-                    ->label('Judul Buku')
-                    ->translateLabel()
-                    ->required()
-                    ->maxLength(255),
-                Select::make('author_id')
-                    ->label('Penulis')
-                    ->relationship('author', 'name')
-                    ->required(),
-                TextInput::make('publisher')
-                    ->label('Penerbit')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('year')
-                    ->label('Tahun')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1900)
-                    ->maxValue(date('Y')),
-                TextInput::make('stock')
-                    ->label('Stok')
-                    ->numeric(),
-                Select::make('category_id')
-                    ->label('Kategori')
-                    ->relationship('category', 'name')
-                    ->required()
+                Section::make([
+                    TextInput::make('title')
+                        ->label('Judul Buku')
+                        ->translateLabel()
+                        ->required()
+                        ->maxLength(255),
+                    Select::make('author_id')
+                        ->label('Penulis')
+                        ->relationship('author', 'name')
+                        ->required(),
+                    TextInput::make('publisher')
+                        ->label('Penerbit')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('year')
+                        ->label('Tahun')
+                        ->required()
+                        ->numeric()
+                        ->minValue(1900)
+                        ->maxValue(date('Y')),
+                    TextInput::make('stock')
+                        ->label('Stok')
+                        ->numeric(),
+                    Select::make('category_id')
+                        ->label('Kategori')
+                        ->relationship('category', 'name')
+                        ->required()
+                ])->columns(2),
             ]);
     }
 
@@ -129,13 +132,13 @@ class BookResource extends Resource
             ->where('author_id', $data['author_id'])
             ->first();
 
-        if($existData){
+        if ($existData) {
             $existData->increment('stock', $data['stock']);
 
             Notification::make()
-            ->title('Stok berhasil ditambahkan!')
-            ->success()
-            ->send();
+                ->title('Stok berhasil ditambahkan!')
+                ->success()
+                ->send();
 
             return [];
         }

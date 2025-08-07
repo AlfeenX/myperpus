@@ -7,6 +7,7 @@ use App\Filament\Resources\MemberResource\RelationManagers;
 use App\Models\Member;
 use Filament\Actions\DeleteAction;
 use Filament\Forms;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -16,6 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
 
 class MemberResource extends Resource
 {
@@ -27,24 +29,29 @@ class MemberResource extends Resource
 
     public static function form(Form $form): Form
     {
+
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('Nama')
-                    ->required(),
-                TextInput::make('phone')
-                    ->label('Nomor Ponsel')
-                    ->minLength(10)
-                    ->maxLength(15)
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Alamat Email')
-                    ->email()
-                    ->required(),
-                Textarea::make('address')
-                    ->label('Alamat')
-                    ->columnSpanFull()
-                    ->rows(8)
+                Section::make()->schema([
+                    Group::make()->schema([
+                        TextInput::make('name')
+                            ->label('Nama')
+                            ->required(),
+                        TextInput::make('phone')
+                            ->label('Nomor Ponsel')
+                            ->minLength(10)
+                            ->maxLength(15)
+                            ->required(),
+                    ])->columns(2),
+                    TextInput::make('email')
+                        ->label('Alamat Email')
+                        ->email()
+                        ->required(),
+                    Textarea::make('address')
+                        ->label('Alamat')
+                        ->columnSpanFull()
+                        ->rows(8)
+                ])
             ]);
     }
 
