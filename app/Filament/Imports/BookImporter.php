@@ -9,6 +9,7 @@ use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class BookImporter extends Importer
 {
@@ -52,19 +53,32 @@ class BookImporter extends Importer
 
     public function resolveRecord(): ?Book
     {
+        $author = Author::firstOrCreate(['name' => $this->data['author']]);
+
+        $category = Category::firstOrCreate([
+            'name' => $this->data['category'],
+            'slug' => Str::slug($this->data['category'])
+        ]);
+
         $book = Book::where('title', $this->data['title'])->first();
+        $existingStock = $book?->stock ?? 0;
+
         $updatedStock = Book::updateOrCreate(
             ['title' => $this->data['title']],
-            ['stock' => $book->stock + (int) $this->data['stock']]
-        );
-
-        Log::info(
-            'Stok updated',
             [
-                'title' => $updatedStock->title,
-                'stock' => $updatedStock->stock
+                'author_id'   => $author->id,
+                'publisher'   => $this->data['publisher'],
+                'year'        => (int) $this->data['year'],
+                'stock'       => $existingStock + (int) $this->data['stock'],
+                'category_id' => $category->id
             ]
         );
+
+        Log::info('Stok updated', [
+            'title' => $updatedStock->title,
+            'stock' => $updatedStock->stock
+        ]);
+
         return $updatedStock;
     }
 
