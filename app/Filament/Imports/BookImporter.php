@@ -8,7 +8,6 @@ use App\Models\Category;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
-use Illuminate\Support\Facades\Log;
 
 class BookImporter extends Importer
 {
@@ -32,11 +31,11 @@ class BookImporter extends Importer
                 ->rules(['required', 'max:255']),
             ImportColumn::make('year')
                 ->requiredMapping()
-                ->integer()
+                ->numeric()
                 ->rules(['required', 'integer']),
             ImportColumn::make('stock')
                 ->requiredMapping()
-                ->integer()
+                ->numeric()
                 ->rules(['required', 'integer']),
             ImportColumn::make('category')
                 ->requiredMapping()
@@ -52,20 +51,7 @@ class BookImporter extends Importer
 
     public function resolveRecord(): ?Book
     {
-        $book = Book::where('title', $this->data['title'])->first();
-        $updatedStock = Book::updateOrCreate(
-            ['title' => $this->data['title']],
-            ['stock' => $book->stock + (int) $this->data['stock']]
-        );
-
-        Log::info(
-            'Stok updated',
-            [
-                'title' => $updatedStock->title,
-                'stock' => $updatedStock->stock
-            ]
-        );
-        return $updatedStock;
+        return new Book;
     }
 
     public static function getCompletedNotificationBody(Import $import): string

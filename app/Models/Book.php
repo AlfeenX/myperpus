@@ -26,8 +26,6 @@ class Book extends Model
         'publisher',
         'year',
         'stock',
-        'category_id',
-        'created_at',
-        'updated_at,'
+        'category_id'
     ];
 }
