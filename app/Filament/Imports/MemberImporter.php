@@ -2,6 +2,7 @@
 
 namespace App\Filament\Imports;
 
+use App\Models\Classroom;
 use App\Models\Member;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
@@ -24,6 +25,15 @@ class MemberImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'min:10','max:15']),
             ImportColumn::make('address'),
+            ImportColumn::make('classroom')
+            ->relationship(resolveUsing: function (string $state): ?Classroom{
+                if(blank($state)){
+                    return null;
+                }
+                return Classroom::firstOrCreate([
+                    'name' => $state
+                ]);
+            }),
         ];
     }
 

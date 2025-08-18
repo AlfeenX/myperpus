@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\IconColumn;
 
 class MemberResource extends Resource
 {
@@ -66,11 +67,31 @@ class MemberResource extends Resource
                     ->icon('heroicon-o-phone'),
                 TextColumn::make('address')
                     ->label('Alamat'),
+                TextColumn::make('classroom.name')
+                    ->label('Kelas'),
+                IconColumn::make('status')
+                ->boolean()
+                ->getStateUsing(function ($record){
+                    return $record->visitorLogs()->whereDate('visit_at', today())->exists();
+                })
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('markAsVisited')
+                    ->label('Tandai Berkunjung')
+                    ->icon('heroicon-o-bookmark')
+                    ->requiresConfirmation()
+                    ->modalHeading('Konfimasi Kunjungan')
+                    ->modalDescription('Apakah anda yakin ingin menandai member ini sebagai telah berkunjung?')
+                    ->action(function ($record) {
+                        $visited = $record->visitorLogs()->whereDate('visit_at', today())->exists();
+                        if (!$visited) {
+                            $record->visitorLogs()->create([]);
+                        }
+                    })
+                    ->disabled(fn($record) => $record->visitorLogs()->whereDate('visit_at', today())->exists()),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()

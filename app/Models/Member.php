@@ -15,6 +15,16 @@ class Member extends Model
         return $this->hasMany(Borrowing::class);
     }
 
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
+
+    public function visitorLogs()
+    {
+        return $this->hasMany(VisitorLog::class);
+    }
+
     protected $fillable =[
         'name',
         'email',
