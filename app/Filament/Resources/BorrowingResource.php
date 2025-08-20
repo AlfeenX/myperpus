@@ -21,7 +21,7 @@ class BorrowingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
-    protected static ?string $navigationGroup = 'Library Management';
+    protected static ?string $navigationGroup = 'Book Management';
 
 
     public static function form(Form $form): Form

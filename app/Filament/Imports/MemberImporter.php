@@ -16,24 +16,27 @@ class MemberImporter extends Importer
     {
         return [
             ImportColumn::make('name')
+                ->label('Nama')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('email')
                 ->requiredMapping()
                 ->rules(['required', 'email', 'max:255']),
             ImportColumn::make('phone')
+                ->label('Nomor Telepon')
                 ->requiredMapping()
-                ->rules(['required', 'min:10','max:15']),
-            ImportColumn::make('address'),
+                ->rules(['required', 'min:10', 'max:20']),
+            ImportColumn::make('address')
+                ->label('Alamat')
+                ->rules(['required']),
             ImportColumn::make('classroom')
-            ->relationship(resolveUsing: function (string $state): ?Classroom{
-                if(blank($state)){
-                    return null;
-                }
-                return Classroom::firstOrCreate([
-                    'name' => $state
-                ]);
-            }),
+                ->label('Kelas')
+                ->relationship(resolveUsing: function (string $state): ?Classroom {
+                    return Classroom::firstOrCreate([
+                        'name' => $state
+                    ]);
+                })
+                ->rules(['required']),
         ];
     }
 
@@ -41,6 +44,21 @@ class MemberImporter extends Importer
     {
         return new Member();
     }
+
+    public function getValidationMessages(): array
+    {
+        return [
+            'name.required' => 'Nama tidak boleh kosong.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'phone.required' => 'Nomor HP wajib diisi.',
+            'phone.min' => 'Nomor HP minimal 10 digit.',
+            'phone.max' => 'Nomor HP maksimal 15 digit.',
+            'address.required' => 'Alamat tidak boleh kosong',
+            'classroom.required' => 'Kelas tidak boleh kosong'
+        ];
+    }
+
 
     public static function getCompletedNotificationBody(Import $import): string
     {

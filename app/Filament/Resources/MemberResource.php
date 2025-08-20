@@ -21,7 +21,7 @@ class MemberResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Library Management';
+    protected static ?string $navigationGroup = 'Member Management';
 
     public static function form(Form $form): Form
     {
@@ -68,12 +68,13 @@ class MemberResource extends Resource
                 TextColumn::make('address')
                     ->label('Alamat'),
                 TextColumn::make('classroom.name')
+                    ->sortable()
                     ->label('Kelas'),
                 IconColumn::make('status')
-                ->boolean()
-                ->getStateUsing(function ($record){
-                    return $record->visitorLogs()->whereDate('visit_at', today())->exists();
-                })
+                    ->boolean()
+                    ->getStateUsing(function ($record) {
+                        return $record->visitorLogs()->whereDate('visit_at', today())->exists();
+                    })
             ])
             ->filters([
                 //
@@ -100,7 +101,8 @@ class MemberResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordUrl(false);
     }
 
     public static function getRelations(): array
