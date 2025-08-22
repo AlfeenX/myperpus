@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BorrowingResource\Pages;
 use App\Models\Book;
 use App\Models\Borrowing;
+use App\Models\Member;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
@@ -34,11 +35,14 @@ class BorrowingResource extends Resource
                         ->label('Nama Anggota')
                         ->placeholder('Select member')
                         ->relationship('member', 'name')
+                        ->options(Member::query()->pluck('name', 'id')->all())
                         ->required(),
                     Select::make('book_id')
                         ->searchable()
                         ->label('Judul Buku')
                         ->placeholder('Select book')
+                        ->options(Book::query()->pluck('title', 'id')->all())
+                        ->optionsLimit(50)
                         ->relationship('book', 'title')
                         ->required(),
                     Select::make('user_id')

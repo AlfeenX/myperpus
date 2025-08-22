@@ -9,7 +9,7 @@ class Classroom extends Model
 {
     use HasFactory;
 
-    public function member()
+    public function members()
     {
         return $this->hasMany(Member::class);
     }

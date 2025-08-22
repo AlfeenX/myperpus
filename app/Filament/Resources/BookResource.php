@@ -3,7 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookResource\Pages;
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\Category;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -36,6 +38,12 @@ class BookResource extends Resource
                     Select::make('author_id')
                         ->label('Penulis')
                         ->relationship('author', 'name')
+                        ->options(Author::query()->pluck('name','id')->all())
+                        ->createOptionForm([
+                            TextInput::make('name')
+                                ->label('Nama Author')
+                        ])
+                        ->searchable()
                         ->required(),
                     TextInput::make('publisher')
                         ->label('Penerbit')
@@ -52,7 +60,13 @@ class BookResource extends Resource
                         ->numeric(),
                     Select::make('category_id')
                         ->label('Kategori')
+                        ->searchable()
                         ->relationship('category', 'name')
+                        ->options(Category::query()->pluck('name', 'id')->all())
+                        ->createOptionForm([
+                            TextInput::make('name')
+                                ->label('Kategori Buku')
+                        ])
                         ->required()
                 ])->columns(2),
             ]);
@@ -95,7 +109,8 @@ class BookResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+            ->recordUrl(false);
     }
 
     public static function getRelations(): array

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MemberResource\Pages;
+use App\Models\Classroom;
 use App\Models\Member;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Textarea;
@@ -14,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Forms\Components\Select;
 
 class MemberResource extends Resource
 {
@@ -38,11 +40,19 @@ class MemberResource extends Resource
                             ->minLength(10)
                             ->maxLength(15)
                             ->required(),
+                        TextInput::make('email')
+                            ->label('Alamat Email')
+                            ->email()
+                            ->required(),
+                        Select::make('classroom_id')
+                            ->label('Kelas')
+                            ->relationship('classroom','name')
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->label('Nama kelas')
+                            ])
+                            ->searchable(),
                     ])->columns(2),
-                    TextInput::make('email')
-                        ->label('Alamat Email')
-                        ->email()
-                        ->required(),
                     Textarea::make('address')
                         ->label('Alamat')
                         ->columnSpanFull()
