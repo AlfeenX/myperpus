@@ -35,19 +35,24 @@ cd libadmin
 cp .env.example .env
 ```
 
-### 3. Jalankan Sail (Docker)
+### 3. Install Dependencies (Composer)
+```bash
+docker run --rm     -u "$(id -u):$(id -g)"     -v $(pwd):/var/www/html     -w /var/www/html     laravelsail/php84-composer:latest     composer install
+```
+
+### 4. Jalankan Sail (Docker)
 ```bash
 ./vendor/bin/sail up -d
 ```
 
-### 4. Install Dependencies
+### 5. Install Dependencies Frontend
 ```bash
-./vendor/bin/sail composer install
 ./vendor/bin/sail npm install && ./vendor/bin/sail npm run dev
 ```
 
-### 5. Migrasi Database
+### 6. Generate Key & Migrasi Database
 ```bash
+./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate --seed
 ```
 
@@ -56,8 +61,9 @@ cp .env.example .env
 ## 🖥️ Akses Aplikasi
 - **Frontend:** http://localhost  
 - **Filament Admin Panel:** http://localhost/admin  
-  - Default login:  
-    - Email: `admin@example.com`  
+  - Default login:
+    - Username: `Admin`
+    - Email: `admin@mail.com`  
     - Password: `password`
 
 ---
