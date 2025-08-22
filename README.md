@@ -1,84 +1,75 @@
-# MyPerpus
+# 📚 LibAdmin
 
-MyPerpus is a Laravel-based library management system. It provides features for managing books, members, borrowings, and user authentication, with a modern UI powered by Filament and Livewire.
-
-## Features
-
-- Book management (CRUD)
-- Member management (CRUD)
-- Borrowing records and status tracking
-- User authentication and profile management
-- Responsive UI with Filament and Tailwind CSS
-
-## Requirements
-
-- PHP >= 8.1
-- Composer
-- Node.js & npm
-- SQLite (default) or other supported database
-
-## Installation
-
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/AlfeenX/myperpus.git
-   cd myperpus
-   ```
-
-2. **Install PHP dependencies:**
-   ```sh
-   composer install
-   ```
-
-3. **Install JavaScript dependencies:**
-   ```sh
-   npm install
-   ```
-
-4. **Copy and configure environment variables:**
-   ```sh
-   cp .env.example .env
-   # Edit .env as needed
-   ```
-
-5. **Generate application key:**
-   ```sh
-   php artisan key:generate
-   ```
-
-6. **Run migrations:**
-   ```sh
-   php artisan migrate
-   ```
-
-7. **Build frontend assets:**
-   ```sh
-   npm run build
-   ```
-
-8. **Start the development server:**
-   ```sh
-   php artisan serve
-   ```
-
-## Running Tests
-
-```sh
-php artisan test
-```
-
-## Folder Structure
-
-- `app/Filament/Resources`: Filament resource classes for CRUD operations
-- `app/Models`: Eloquent models
-- `resources/views`: Blade templates
-- `database/migrations`: Database schema
-- `config`: Configuration files
-
-## License
-
-This project is open-source and available under the [MIT license](LICENSE).
+LibAdmin adalah aplikasi manajemen perpustakaan berbasis **Laravel** dengan dukungan **FilamentPHP** sebagai admin panel dan **MySQL** sebagai database.  
+Proyek ini dijalankan menggunakan **Laravel Sail** (Docker-based dev environment).
 
 ---
 
-Feel free to customize this README for your specific
+## 🚀 Fitur
+- Autentikasi pengguna
+- Dashboard admin berbasis **FilamentPHP**
+- Manajemen data anggota, buku, dan transaksi peminjaman
+- Terintegrasi dengan **MySQL**
+- Development environment menggunakan **Laravel Sail**
+
+---
+
+## 🛠️ Teknologi
+- [Laravel 11.x](https://laravel.com)
+- [FilamentPHP](https://filamentphp.com)
+- [MySQL 8](https://www.mysql.com)
+- [Laravel Sail](https://laravel.com/docs/sail) (Docker)
+
+---
+
+## 📂 Instalasi
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/username/libadmin.git
+cd libadmin
+```
+
+### 2. Copy .env
+```bash
+cp .env.example .env
+```
+
+### 3. Jalankan Sail (Docker)
+```bash
+./vendor/bin/sail up -d
+```
+
+### 4. Install Dependencies
+```bash
+./vendor/bin/sail composer install
+./vendor/bin/sail npm install && ./vendor/bin/sail npm run dev
+```
+
+### 5. Migrasi Database
+```bash
+./vendor/bin/sail artisan migrate --seed
+```
+
+---
+
+## 🖥️ Akses Aplikasi
+- **Frontend:** http://localhost  
+- **Filament Admin Panel:** http://localhost/admin  
+  - Default login:  
+    - Email: `admin@example.com`  
+    - Password: `password`
+
+---
+
+## 📌 Catatan
+- Pastikan **Docker Desktop** sudah berjalan.
+- Untuk stop container:
+```bash
+./vendor/bin/sail down
+```
+
+---
+
+## 📜 Lisensi
+Proyek ini menggunakan lisensi [MIT](LICENSE).
